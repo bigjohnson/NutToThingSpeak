@@ -36,7 +36,6 @@ then
         OLDSTATUS=$( cat ${STATUSFILE} )
         if [ "${NEWSTATUS}" != "${OLDSTATUS}" ]
         then
-                DATE=$(date)
                 STATUS="${NEWSTATUS} ${DATE}"
                 echo ${NEWSTATUS} > ${STATUSFILE}
         fi
