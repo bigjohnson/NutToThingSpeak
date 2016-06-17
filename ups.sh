@@ -21,6 +21,7 @@ BATTERYVOLT_ST=battery.voltage
 PERCENTU_ST=ups.load
 PERCENTB_ST=battery.charge
 NEWSTATUS_ST=ups.status
+DATE=$(date)
 
 INVOLT=$(upsc ${UPS} ${INVOLT_ST} 2>/dev/null )
 if [ ${?} -eq 0 ]
@@ -36,7 +37,7 @@ then
         if [ "${NEWSTATUS}" != "${OLDSTATUS}" ]
         then
                 DATE=$(date)
-                STATUS=${NEWSTATUS}
+                STATUS="${NEWSTATUS} ${DATE}"
                 echo ${NEWSTATUS} > ${STATUSFILE}
         fi
 #       echo $OUVOLT
@@ -46,5 +47,7 @@ then
 #       echo $BATTERYVOLT
 #       echo $PERCENTU
 #       echo $PERCENTB
-        uscita=$(/usr/bin/curl -s http://api.thingspeak.com/update?key=${UPLOADKEY}\&field1=${INVOLT}\&field2=${INFREQ}\&field3=${OUTVOLT}\&field4=${PERCENTU}\&field5=${UPSTEMP}\&field6=${PERCENTB}\&field7=${BATTERYVOLT}\&status="${STATUS} ${DATE}" 2>/dev/null )
+        uscita=$(/usr/bin/curl -s http://api.thingspeak.com/update?key=${UPLOADKEY}\&field1=${INVOLT}\&field2=${INFREQ}\&field3=${OUTVOLT}\&field4=${PERCENTU}\&field5=${UPSTEMP}\&field6=${PERCENTB}\&field7=${BATTERYVOLT}\&status="${STATUS}" 2>/dev/null )
+else
+        uscita=$(/usr/bin/curl -s http://api.thingspeak.com/update?key=${UPLOADKEY}\&status="UPS comunication error ${DATE}" )
 fi
