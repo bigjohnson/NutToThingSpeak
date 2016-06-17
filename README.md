@@ -11,3 +11,5 @@ chmod a+x ups.sh
 Test it and put it on your cron...
 
 On the ThingSpeak status you will fin main power source faillures.
+
+See my ThinhSpeak ups page at https://thingspeak.com/channels/125287
