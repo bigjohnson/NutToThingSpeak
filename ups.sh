@@ -10,6 +10,7 @@ UPLOADKEY=SUBSTITUTE_WITH_YOUR_UPLOAD_KEY
 # You must create the crons dir, and change with your user home if need
 # or put the file where you wont
 STATUSFILE=/home/pi/crons/status.txt
+LOGFILE=/home/pi/crons/ups.log
 # Substitute with your UPS value.
 UPS=myups@localhost
 # Change the value if need.
@@ -34,9 +35,10 @@ then
         PERCENTB=$( upsc ${UPS} ${PERCENTB_ST} 2>/dev/null )
         NEWSTATUS=$( upsc ${UPS} ${NEWSTATUS_ST} 2>/dev/null )
         OLDSTATUS=$( cat ${STATUSFILE} )
+        STATUS=${NEWSTATUS}
         if [ "${NEWSTATUS}" != "${OLDSTATUS}" ]
         then
-                STATUS="${NEWSTATUS} ${DATE}"
+                echo ${NEWSTATUS} ${DATE} >> ${LOGFILE}
                 echo ${NEWSTATUS} > ${STATUSFILE}
         fi
 #       echo $OUVOLT
@@ -48,5 +50,7 @@ then
 #       echo $PERCENTB
         uscita=$(/usr/bin/curl -s http://api.thingspeak.com/update?key=${UPLOADKEY}\&field1=${INVOLT}\&field2=${INFREQ}\&field3=${OUTVOLT}\&field4=${PERCENTU}\&field5=${UPSTEMP}\&field6=${PERCENTB}\&field7=${BATTERYVOLT}\&status="${STATUS}" 2>/dev/null )
 else
-        uscita=$(/usr/bin/curl -s http://api.thingspeak.com/update?key=${UPLOADKEY}\&status="UPS comunication error ${DATE}" )
+        STATUS="UPS comunication error"
+        uscita=$(/usr/bin/curl -s http://api.thingspeak.com/update?key=${UPLOADKEY}\&status="${STATUS}" )
+        echo ${STATUS} ${DATE} >> ${LOGFILE}
 fi
