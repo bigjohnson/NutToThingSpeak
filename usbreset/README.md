@@ -10,6 +10,12 @@ compile with
 
 cc usbreset.c -o usbreset
 
+instal with
+
+cp usbreset /usr/local/bin
+
 usage
 
-sudo ./usbreset /dev/bus/usb/004/003
+sudo usbreset /dev/bus/usb/004/003
+
+test with test.sh
