@@ -18,4 +18,4 @@ usage
 
 sudo usbreset /dev/bus/usb/004/003
 
-test with test.sh
+test with ./test.sh
