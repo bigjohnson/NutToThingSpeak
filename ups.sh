@@ -53,7 +53,9 @@ else
         STATUS="UPS comunication error"
         uscita=$(/usr/bin/curl -s http://api.thingspeak.com/update?key=${UPLOADKEY}\&status="${STATUS}" )
         echo ${STATUS} ${DATE} >> ${LOGFILE}
-        # uncomment next lines if you have a usb intermittent problems connecting to ups
+        # uncomment next lines if you have a usb intermittent problems connecting to ups, you nedd add 
+	# Defaults:pi !requiretty 
+	# in /etc/sudoers
         #DEVICE=$(lsusb -d 0665:5161)
 	#BUS=$(echo ${DEVICE} | awk '{print $2}')
 	#DEV=$(echo ${DEVICE} | awk '{print $4}')
